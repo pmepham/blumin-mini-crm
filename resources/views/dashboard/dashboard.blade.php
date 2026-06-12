@@ -2,7 +2,7 @@
 @extends('layouts.main')
 
 @section('header')
-    Dashboard GG
+    Dashboard
 @endsection
 
 @section('content')

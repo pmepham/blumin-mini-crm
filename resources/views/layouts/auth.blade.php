@@ -10,9 +10,7 @@
 </head>
 
 <body class="h-full">
-    
     @yield('content')
-
 </body>
 
 </html>
