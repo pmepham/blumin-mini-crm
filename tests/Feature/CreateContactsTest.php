@@ -19,6 +19,13 @@ test('authenticated users can access the contacts page', function () {
 });
 
 //can access create contact page
+test('authenticated user can access the contacts create page', function(){
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('contacts.create'))
+        ->assertOk();
+});
 
 //create create a contact
 

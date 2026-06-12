@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
@@ -9,15 +10,17 @@ class ContactController extends Controller
 {
     public function index()
     {
-        return view('contact.contact');
+        return view('contact.index');
     }
 
     public function create()
     {
+        return view('contact.create');
     }
 
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
+        
     }
 
     public function show(Contact $contact)
