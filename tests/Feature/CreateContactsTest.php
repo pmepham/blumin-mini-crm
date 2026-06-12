@@ -27,6 +27,38 @@ test('authenticated user can access the contacts create page', function(){
         ->assertOk();
 });
 
-//create create a contact
+//create a contact
+test('authenticated user can create a contact', function(){
+    $user = User::factory()->create();
+    $response = $this
+        ->actingAs($user)
+        ->post(route('contacts.store'), [
+            'name' => 'John Smith',
+            'email' => 'john@example.com',
+            'company_name' => 'Asda',
+            'status' => 'prospect',
+        ]);
+
+    $response->assertRedirect(route('contacts.index'));
+
+    $this->assertDatabaseHas('contacts', [
+        'name' => 'John Smith',
+        'email' => 'john@example.com',
+        'company_name' => 'Asda',
+        'status' => 'prospect',
+    ]);
+});
 
 //check validation errors
+test('name email company name and status are required when creating a contact', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('contacts.store'), [])
+        ->assertSessionHasErrors([
+            'name',
+            'email',
+            'company_name',
+            'status',
+        ]);
+});

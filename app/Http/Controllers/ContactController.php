@@ -20,7 +20,10 @@ class ContactController extends Controller
 
     public function store(ContactRequest $request)
     {
-        
+        Contact::create($request->validated());
+        return redirect()
+        ->route('contacts.index')
+        ->with('success', 'Contact created successfully.');
     }
 
     public function show(Contact $contact)
