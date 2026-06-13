@@ -8,9 +8,16 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function index()
-    {
-        return view('contact.index');
+    public function index(Request $request)
+    {   
+        $status = $request->status;
+        $contacts = Contact::query()
+            ->when($request->filled('status'), function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10)->withQueryString();
+        return view('contact.index', compact('contacts', 'status'));
     }
 
     public function create()

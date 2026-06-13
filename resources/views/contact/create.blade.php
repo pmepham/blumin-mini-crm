@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('contacts.store') }}" method="POST" class="rounded-xl bg-white p-5">
+<div class="rounded-xl bg-white p-5">
+    <form action="{{ route('contacts.store') }}" method="POST">
         @csrf
         <input type="hidden" name="status" value="prospect">
         <div class="space-y-12">
@@ -52,4 +53,5 @@
                 class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
         </div>
     </form>
+</div>
 @endsection

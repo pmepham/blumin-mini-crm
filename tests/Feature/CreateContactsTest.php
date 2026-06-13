@@ -18,7 +18,6 @@ test('authenticated users can access the contacts page', function () {
         ->assertOk();
 });
 
-//can access create contact page
 test('authenticated user can access the contacts create page', function(){
     $user = User::factory()->create();
 
@@ -27,7 +26,6 @@ test('authenticated user can access the contacts create page', function(){
         ->assertOk();
 });
 
-//create a contact
 test('authenticated user can create a contact', function(){
     $user = User::factory()->create();
     $response = $this
@@ -49,16 +47,16 @@ test('authenticated user can create a contact', function(){
     ]);
 });
 
-//check validation errors
 test('name email company name and status are required when creating a contact', function () {
     $user = User::factory()->create();
+    $response = $this->actingAs($user)
+    ->post(route('contacts.store'), []);
 
-    $this->actingAs($user)
-        ->post(route('contacts.store'), [])
-        ->assertSessionHasErrors([
-            'name',
-            'email',
-            'company_name',
-            'status',
-        ]);
+    $response->dumpSession();
+    $response->assertSessionHasErrors([
+        'name',
+        'email',
+        'company_name',
+        'status',
+    ]);
 });
