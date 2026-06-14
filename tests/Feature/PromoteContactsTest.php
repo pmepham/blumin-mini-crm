@@ -6,43 +6,43 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('guests cannot access the edit contacts page', function () {
+test('guests cannot access the promote contact page', function () {
     $contact = Contact::factory()->create();
-    $this->get(route('contacts.edit', $contact))
+    $this->get(route('contacts.promote.edit', $contact))
         ->assertRedirect(route('login'));
 });
 
-test('authenticated users can access the edit contacts page', function () {
+test('authenticated users can access the promote contact page', function () {
     $user = User::factory()->create();
     $contact = Contact::factory()->create();
 
     $this->actingAs($user)
-        ->get(route('contacts.edit', $contact))
+        ->get(route('contacts.promote.edit', $contact))
         ->assertOk();
 });
 
-test('authenticated user can edit a contact', function () {
+test('authenticated user can promote a contact', function () {
     $user = User::factory()->create();
     $contact = Contact::factory()->create([
         'name' => 'John Smith',
         'email' => 'john@example.com',
         'company_name' => 'Asda',
+        'status' => 'prospect',
     ]);
 
     $response = $this
         ->actingAs($user)
-        ->put(route('contacts.update', $contact), [
-            'name' => 'Jane Smith',
-            'email' => 'jane@example.com',
-            'company_name' => 'Tesco',
+        ->put(route('contacts.promote.update', $contact), [
+            'account_reference' => 'TestRef',
+            'territory_code' => 'M50',
         ]);
 
     $response->assertRedirect(route('contacts.show', $contact));
 
     $this->assertDatabaseHas('contacts', [
         'id' => $contact->id,
-        'name' => 'Jane Smith',
-        'email' => 'jane@example.com',
-        'company_name' => 'Tesco',
+        'status' => 'account',
+        'account_reference' => 'TestRef',
+        'territory_code' => 'M50',
     ]);
 });

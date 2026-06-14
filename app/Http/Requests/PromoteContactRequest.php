@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactRequest extends FormRequest
+class PromoteContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,8 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'company_name' => 'required|string',
-            'account_reference' => 'sometimes|required|string',
-            'territory_code' => 'sometimes|required|string'
+            'account_reference' => 'required|string',
+            'territory_code' => 'required|string'
         ];
     }
 }

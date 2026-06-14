@@ -47,7 +47,7 @@ test('authenticated user can create a contact', function(){
     ]);
 });
 
-test('name email company name and status are required when creating a contact', function () {
+test('name email and company name are required when creating a contact', function () {
     $user = User::factory()->create();
     $response = $this->actingAs($user)
     ->post(route('contacts.store'), []);
@@ -57,6 +57,5 @@ test('name email company name and status are required when creating a contact', 
         'name',
         'email',
         'company_name',
-        'status',
     ]);
 });

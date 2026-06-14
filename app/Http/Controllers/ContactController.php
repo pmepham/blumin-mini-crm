@@ -22,12 +22,16 @@ class ContactController extends Controller
 
     public function create()
     {
-        return view('contact.create');
+        $contact = new Contact();
+        return view('contact.create', compact('contact'));
     }
 
     public function store(ContactRequest $request)
     {
-        Contact::create($request->validated());
+        Contact::create([
+            ...$request->validated(), 
+            'status' => 'prospect'
+        ]);
         return redirect()
         ->route('contacts.index')
         ->with('success', 'Contact created successfully.');
@@ -35,19 +39,29 @@ class ContactController extends Controller
 
     public function show(Contact $contact)
     {
-
         return view('contact.show', compact('contact'));
     }
 
     public function edit(Contact $contact)
     {
+        return view('contact.create', compact('contact'));
     }
 
-    public function update(Request $request, Contact $contact)
-    {
+    public function update(ContactRequest $request, Contact $contact)
+    {   
+        $contact->fill($request->validated());
+        $contact->save();
+        return redirect()
+        ->route('contacts.show', $contact)
+        ->with('success', 'Contact updated successfully.');
     }
 
     public function destroy(Contact $contact)
     {
+        $contact->delete($contact->id);
+        return redirect()
+        ->route('contacts.index')
+        ->with('success', 'Contact deleted successfully.');
     }
+
 }
