@@ -75,7 +75,7 @@
                             {{ ucfirst($contact->status) }}
                         </td>
                         <td class="whitespace-nowrap px-6 py-4 text-right text-sm">
-                            <a href="{{ route('contacts.show', $contact->id) }}"
+                            <a href="{{ route('contacts.show', $contact) }}"
                                 class="rounded-md bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                 View
                             </a>
