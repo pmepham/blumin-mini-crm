@@ -2,7 +2,7 @@
 
 @section('header')
     <div class="flex justify-between">
-        Create a Contact
+        {{ $contact->exists ? 'Update a Contact' : 'Create a Contact'}}
         <a href="{{ route('contacts.index') }}" class="rounded-md bg-gray-400 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Back</a>
     </div>
 @endsection

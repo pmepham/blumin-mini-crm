@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,5 +30,16 @@ class Contact extends Model
                 return strtoupper($first . $last);
             }
         );
+    }
+
+    public static function totals()
+    {
+        return static::query()
+            ->selectRaw("
+                COUNT(*) as total_contacts,
+                COUNT(CASE WHEN status = 'prospect' THEN 1 END) as total_prospects,
+                COUNT(CASE WHEN status = 'account' THEN 1 END) as total_accounts
+            ")
+            ->first();
     }
 }

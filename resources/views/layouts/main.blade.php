@@ -23,12 +23,17 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
-                                <a href="{{ route('dashboard.index') }}" aria-current="page"
-                                    class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Dashboard</a>
+                                <a href="{{ route('dashboard.index') }}"
+                                    @if(request()->routeIs('dashboard.index')) aria-current="page" @endif
+                                    class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('dashboard.index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                                    Dashboard
+                                </a>
+
                                 <a href="{{ route('contacts.index') }}"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Contacts</a>
-                                
+                                    @if(request()->routeIs('contacts.index')) aria-current="page" @endif
+                                    class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('contacts.index') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                                    Contacts
+                                </a>
                             </div>
                         </div>
                     </div>
