@@ -1,58 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Blumin Mini CRM
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A small Laravel CRM application for managing prospects and accounts.
 
-## About Laravel
+The application allows authenticated users to manage prospects, promote them into accounts, and send email notifications when new accounts are created. It also includes a scheduled daily summary of newly added prospects and accounts.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Setup
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/pmepham/blumin-mini-crm.git
+cd blumin-mini-crm
 
-php artisan boost:install
+composer install
+npm install
+
+cp .env.example .env
+php artisan key:generate
+
+touch database/database.sqlite
+php artisan migrate --seed
+
+npm run build
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Login
 
-## Contributing
+A test user is created by the database seeder:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```text
+Email: test@test.com
+Password: password
+```
 
-## Code of Conduct
+## Environment
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The account notification recipient is configured via:
 
-## Security Vulnerabilities
+```env
+CRM_NOTIFICATION_EMAIL=test@example.com
+MAIL_MAILER=log
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+When using the log mailer, emails are written to:
 
-## License
+```text
+storage/logs/laravel.log
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Scheduler
+
+The daily summary email is handled by Laravel's scheduler.
+
+To run the scheduler locally:
+
+```bash
+php artisan schedule:work
+```
+
+## Design Notes
+
+Prospects and accounts are stored in a single `contacts` table, with a `status` column used to distinguish between them.
+
+I chose this approach because both record types share the same core fields. Account-specific fields, such as account reference and territory code, are populated when a contact becomes an account. This keeps promotion simple, as the existing record can be updated rather than copied into a separate table.
+
+Validation is handled with Form Request classes to keep controller actions focused on application flow rather than request validation.
+
+## Events and Notifications
+
+When a prospect is promoted to an account, the application dispatches an event to handle the promote-prospect email notification.
+
+I chose this approach to keep the promotion logic separate from the notification logic. Promoting a contact should only be responsible for updating the contact into an account, while the event listener handles what should happen afterwards.
+
+This keeps the controller/service method cleaner and makes the notification behaviour easier to extend later. For example, if the application needed to add audit logging, Slack notifications, or additional account onboarding steps, those could be added as separate listeners without changing how promotions work.
+

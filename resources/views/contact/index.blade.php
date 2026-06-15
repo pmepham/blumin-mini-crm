@@ -33,7 +33,7 @@
                 {{ session('success') }}
             </div>
         @endif
-        <div class="overflow-x-scroll">
+        <div class="overflow-x-scroll mb-2.5">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>

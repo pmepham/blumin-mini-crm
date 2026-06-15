@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Contact;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Contact>
@@ -26,5 +27,21 @@ class ContactFactory extends Factory
             'account_reference' => null,
             'territory_code' => null,
         ];
+    }
+
+     public function prospect(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'prospect',
+        ]);
+    }
+
+    public function account(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'account',
+            'account_reference' => strtoupper(Str::random(10)),
+            'territory_code' => strtoupper(substr(fake()->postcode(), 0, 3)),
+        ]);
     }
 }
