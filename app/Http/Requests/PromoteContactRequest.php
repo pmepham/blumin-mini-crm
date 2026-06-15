@@ -23,7 +23,7 @@ class PromoteContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'account_reference' => 'required|string',
+            'account_reference' => 'required|string|unique:contacts,account_reference',
             'territory_code' => 'required|string'
         ];
     }

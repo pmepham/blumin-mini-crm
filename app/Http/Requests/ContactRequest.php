@@ -22,11 +22,12 @@ class ContactRequest extends FormRequest
      */
     public function rules(): array
     {
+        $contact = $this->route('contact');
         return [
             'name' => 'required|string',
             'email' => 'required|email',
             'company_name' => 'required|string',
-            'account_reference' => 'sometimes|required|string',
+            'account_reference' => 'sometimes|required|string|unique:contacts,account_reference,'. ($contact->id ?? 0),
             'territory_code' => 'sometimes|required|string'
         ];
     }

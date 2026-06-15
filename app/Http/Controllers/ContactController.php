@@ -15,7 +15,7 @@ class ContactController extends Controller
             ->when($request->filled('status'), function ($query) use ($status) {
                 $query->where('status', $status);
             })
-            ->orderBy('created_at', 'DESC')
+            ->latest()
             ->paginate(10)->withQueryString();
         return view('contact.index', compact('contacts', 'status'));
     }
@@ -58,7 +58,7 @@ class ContactController extends Controller
 
     public function destroy(Contact $contact)
     {
-        $contact->delete($contact->id);
+        $contact->delete();
         return redirect()
         ->route('contacts.index')
         ->with('success', 'Contact deleted successfully.');

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProspectPromoted;
 use App\Http\Requests\PromoteContactRequest;
 use App\Models\Contact;
 
-class PromoteContactcontroller extends Controller
+class PromoteContactController extends Controller
 {
 
     public function edit(Contact $contact)
@@ -20,6 +21,8 @@ class PromoteContactcontroller extends Controller
             'status' => 'account'
         ]);
         $contact->save();
+        event(new ProspectPromoted($contact));
+
         return redirect()
         ->route('contacts.show', $contact)
         ->with('success', 'Contact promoted successfully.');
