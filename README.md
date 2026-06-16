@@ -2,7 +2,7 @@
 
 A small Laravel CRM for managing prospects and accounts.
 
-Authenticated users can create, update and delete contacts, promote prospects into accounts, and trigger email notifications when new accounts are created. A scheduled task also sends a daily summary of newly added prospects and accounts.
+Authenticated users can create, update and delete contacts, promote prospects into accounts, and trigger email notifications when prospects are promoted. A scheduled task also sends a daily summary of newly added prospects and accounts.
 
 ## Setup
 
