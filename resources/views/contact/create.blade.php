@@ -61,7 +61,7 @@
             </div>
 
             <div class="sm:col-span-3">
-                <label for="territory_code" class="block text-sm/6 font-medium text-gray-900">Email address<span class="text-red-600">*</span></label>
+                <label for="territory_code" class="block text-sm/6 font-medium text-gray-900">Territory code<span class="text-red-600">*</span></label>
                 <div class="mt-2">
                     <input id="territory_code" type="text" name="territory_code" value="{{ old('territory_code', $contact->territory_code) }}"
                         class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />

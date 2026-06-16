@@ -9,7 +9,7 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Notification;
 
-#[Signature('app:send-daily-summary-email')]
+#[Signature('app:send-daily-summary')]
 #[Description('Command description')]
 class SendDailySummaryEmail extends Command
 {
